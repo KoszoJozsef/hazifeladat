@@ -5,12 +5,14 @@ import java.util.List;
 
 
 
+
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import koszo.jozsef.beans.interfaces.UserBeanLocal;
-import koszo.jozsef.model.ApplicationUser;
+import koszo.jozsef.model.Applicationuser;
 
 /**
  * Session Bean implementation class UserBean
@@ -29,21 +31,21 @@ public class UserBean implements UserBeanLocal {
     }
 
 	@Override
-	public ApplicationUser updateUser(ApplicationUser user) {
+	public Applicationuser updateUser(Applicationuser user) {
 		em.merge(user);
 		return user;
 	}
 
 	@Override
-	public ApplicationUser getUser(int id) {
-		ApplicationUser user = em.find(ApplicationUser.class, id);
+	public Applicationuser getUser(int id) {
+		Applicationuser user = em.find(Applicationuser.class, id);
 		return user;
 	}
 
 	@Override
-	public List<ApplicationUser> getUserList() {
-		return em.createNamedQuery("ApplicationUser.findById", ApplicationUser.class).getResultList();
-
+	public List<Applicationuser> getUserList() {
+		return em.createNamedQuery("Applicationuser.findAll", Applicationuser.class).getResultList();
 	}
+
 
 }

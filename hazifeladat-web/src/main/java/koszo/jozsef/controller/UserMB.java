@@ -1,8 +1,7 @@
 package koszo.jozsef.controller;
 
+import java.util.Date;
 import java.util.List;
-
-
 
 
 import javax.faces.bean.ManagedBean;
@@ -10,7 +9,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import koszo.jozsef.beans.interfaces.UserBeanLocal;
-import koszo.jozsef.model.ApplicationUser;
+import koszo.jozsef.model.Applicationuser;
 import koszo.jozsef.model.Role;
 
 
@@ -28,13 +27,16 @@ public class UserMB {
 	private String password;
 	private String firstname;
 	private String lastname;
+	private Date lastlogin;
 	private Role role;
 	
+	
 	public void updateUser(){
-		ApplicationUser u = new ApplicationUser();
-		u.setId(id);
+		Applicationuser u = new Applicationuser();
+		u.setUserid(id);
 		u.setUsername(username);
 		u.setPassword(password);
+		u.setLastlogin(lastlogin);
 		u.setFirstname(firstname);
 		u.setLastname(lastname);
 		u.setRole(role);
@@ -43,18 +45,37 @@ public class UserMB {
 	}
 	
 	public void getUser(int id){
-		ApplicationUser u = userbl.getUser(id);
-		this.id = u.getId();
+		Applicationuser u = userbl.getUser(id);
+		this.id = u.getUserid();
+		username = u.getUsername();
+		password = u.getPassword();
+		lastlogin = u.getLastlogin();
 		firstname = u.getFirstname();
 		lastname = u.getLastname();
 		role = u.getRole();
 
 	}
 	
-	public List<ApplicationUser> getUsers(){
+	public List<Applicationuser> getUsers(){
 		return userbl.getUserList();
 	}
-
+	
+	public String login() {
+		
+		List<Applicationuser> tmp = userbl.getUserList();
+		
+		for(int i = 0;i < tmp.size();){
+			
+			if(username.equals(tmp.get(i).getUsername()) && password.equals(tmp.get(i).getPassword())){		
+				return "vehiclelist";			
+			} else {			
+				i++;			
+			}
+		}
+		
+		return "login";
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -101,6 +122,14 @@ public class UserMB {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public Date getLastlogin() {
+		return lastlogin;
+	}
+
+	public void setLastlogin(Date lastlogin) {
+		this.lastlogin = lastlogin;
 	}
 
 	

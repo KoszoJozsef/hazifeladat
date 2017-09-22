@@ -55,7 +55,7 @@ public class VehicleBean implements VehicleBeanLocal {
 
 	@Override
 	public List<Vehicle> getVehicleList() {
-		return em.createNamedQuery("Vehicle.findById", Vehicle.class).getResultList();
+		return em.createNamedQuery("Vehicle.findAll", Vehicle.class).getResultList();
 	}
 
 }

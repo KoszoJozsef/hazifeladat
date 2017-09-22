@@ -1,5 +1,6 @@
 package koszo.jozsef.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -7,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import koszo.jozsef.beans.interfaces.VehicleBeanLocal;
+import koszo.jozsef.model.Extras;
 import koszo.jozsef.model.Vehicle;
 
 
@@ -18,26 +20,22 @@ public class VehicleMB {
 	@Inject
 	private VehicleBeanLocal vehiclebl;
 	
-	private int id;
+	private int vehicleid;
 	private String brand;
 	private String model;
 	private String typeDesignation;
 	private String VIN;
 	private String comment;
-//	private boolean seatHeating;
-//	private boolean airbags;
-//	private boolean overturningSystem;
+	private List<Extras> extras;
 	
 	public void createVehicle(){
 		Vehicle v = new Vehicle();
 		v.setBrand(brand);
 		v.setModel(model);
-		v.setTypeDesignation(typeDesignation);
-		v.setVIN(VIN);
+		v.setTypedesignation(typeDesignation);
+		v.setVin(VIN);
 		v.setComment(comment);
-//		v.setSeatHeating(seatHeating);
-//		v.setAirbags(airbags);
-//		v.setOverturningSystem(overturningSystem);
+		v.setExtras(extras);
 		
 		vehiclebl.createVehicle(v);
 		
@@ -45,15 +43,13 @@ public class VehicleMB {
 	
 	public void updateVehicle(){
 		Vehicle v = new Vehicle();
-		v.setId(id);
+		v.setVehicleid(vehicleid);
 		v.setBrand(brand);
 		v.setModel(model);
-		v.setTypeDesignation(typeDesignation);
-		v.setVIN(VIN);
+		v.setTypedesignation(typeDesignation);
+		v.setVin(VIN);
 		v.setComment(comment);
-//		v.setSeatHeating(seatHeating);
-//		v.setAirbags(airbags);
-//		v.setOverturningSystem(overturningSystem);
+		v.setExtras(extras);
 		
 		vehiclebl.updateVehicle(v);
 	}
@@ -62,29 +58,27 @@ public class VehicleMB {
 		vehiclebl.deleteVehicle(id);
 	}
 	
-	public void getVehicle(int id){
-		Vehicle v = vehiclebl.getVehicle(id);
-		this.id = v.getId();
+	public void getVehicle(int vehicleid){
+		Vehicle v = vehiclebl.getVehicle(vehicleid);
+		this.vehicleid = v.getVehicleid();
 		brand = v.getBrand();
 		model = v.getModel();
-		typeDesignation = v.getTypeDesignation();
-		VIN = v.getVIN();
+		typeDesignation = v.getTypedesignation();
+		VIN = v.getVin();
 		comment = v.getComment();
-//		seatHeating = v.getSeatHeating();
-//		airbags = v.getAirbags();
-//		overturningSystem = v.getOverturningSystem();
+		extras = v.getExtras();
 	}
 	
 	public List<Vehicle> getVehicles(){
 		return vehiclebl.getVehicleList();
 	}
 
-	public int getId() {
-		return id;
+	public int getVehicleid() {
+		return vehicleid;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setVehicleid(int vehicleid) {
+		this.vehicleid = vehicleid;
 	}
 
 	public String getBrand() {
@@ -127,28 +121,14 @@ public class VehicleMB {
 		this.comment = comment;
 	}
 
-//	public boolean isSeatHeating() {
-//		return seatHeating;
-//	}
-//
-//	public void setSeatHeating(boolean seatHeating) {
-//		this.seatHeating = seatHeating;
-//	}
-//
-//	public boolean isAirbags() {
-//		return airbags;
-//	}
-//
-//	public void setAirbags(boolean airbags) {
-//		this.airbags = airbags;
-//	}
-//
-//	public boolean isOverturningSystem() {
-//		return overturningSystem;
-//	}
-//
-//	public void setOverturningSystem(boolean overturningSystem) {
-//		this.overturningSystem = overturningSystem;
-//	}
+	public List<Extras> getExtras() {
+		return extras;
+	}
+
+	public void setExtras(List<Extras> extras) {
+		this.extras = extras;
+	}
+
+
 	
 }

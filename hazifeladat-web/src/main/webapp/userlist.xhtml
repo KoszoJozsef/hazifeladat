@@ -24,8 +24,10 @@
       	
       	<div>
       		<c:choose>
-      			<c:when test="#{userMB.id > 0}">
+      			<c:when test="#{userMB.id > 0}">    			
       				<h:inputHidden value="#{userMB.id}" />
+      				<h:inputHidden value="#{userMB.username}" />
+      				<h:inputHidden value="#{userMB.password}" />
       				<div>
 	      				<h:outputText value="Firstname" />
 	      				<h:inputText value="#{userMB.firstname}" />
@@ -56,10 +58,10 @@
       				<td>#{u.firstname}</td>
 					<td>#{u.lastname}</td>
 					<td>#{u.role}</td>
-					<td>#{u.lastLogin}</td>
+					<td>#{u.lastlogin}</td>
 					<td>
 						<h:form>
-							<h:commandLink action="#{userMB.getUser(u.id)}" value="Edit" />
+							<h:commandLink action="#{userMB.getUser(u.userid)}" value="Edit" />
 						</h:form>
 					</td>
 					

@@ -21,7 +21,9 @@
         http://xmlns.jcp.org/xml/ns/persistence
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
    <persistence-unit name="primary">
-      <jta-data-source>java:jboss/datasources/hazifeladat</jta-data-source>
+      <non-jta-data-source>java:jboss/datasources/hazifeladat</non-jta-data-source>
+      <class>koszo.jozsef.model.Applicationuser</class>
+      <class>koszo.jozsef.model.Vehicle</class>
       <properties>
          <!-- Properties for Hibernate -->
          <property name="hibernate.show_sql" value="false" />

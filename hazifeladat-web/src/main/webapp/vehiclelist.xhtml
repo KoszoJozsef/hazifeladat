@@ -42,9 +42,16 @@
 	      	<h:inputText value="#{vehicleMB.comment}" />
       	</div>
       	<div>
+      	<h:selectManyMenu value="#{vehicleMB.extras}">
+   			<f:selectItem itemValue="Airbags" itemLabel="Airbags" />
+   			<f:selectItem itemValue="OverturningSystem" itemLabel="OverTurningSystem" />
+   			<f:selectItem itemValue="SeatHeating" itemLabel="SeatHeating" />
+   		</h:selectManyMenu>
+      	</div>
+      	<div>
       		<c:choose>
-      			<c:when test="#{vehicleMB.id > 0}">
-      				<h:inputHidden value="#{vehicleMB.id}" />
+      			<c:when test="#{vehicleMB.vehicleid > 0}">
+      				<h:inputHidden value="#{vehicleMB.vehicleid}" />
       				<h:commandButton action="#{vehicleMB.updateVehicle()}"  value="Update" />
       			</c:when>
       			<c:otherwise>
@@ -62,6 +69,7 @@
 	      		<th>TypeDesignation</th>
 	      		<th>VIN</th>
 	      		<th>Comment</th>
+	      		<th>Extras</th>
 	      		<th></th>
 	      		<th></th>
       		</tr>
@@ -69,20 +77,21 @@
       	<tbody>
       		<ui:repeat var="v" value="#{vehicleMB.vehicles}">
       			<tr>
-      				<td>#{v.id}</td>
+      				<td>#{v.vehicleid}</td>
       				<td>#{v.brand}</td>
 					<td>#{v.model}</td>
-					<td>#{v.typeDesignation}</td>
-					<td>#{v.VIN}</td>
+					<td>#{v.typedesignation}</td>
+					<td>#{v.vin}</td>
 					<td>#{v.comment}</td>
+					<td>#{v.extras}</td>
 					<td>
 						<h:form>
-							<h:commandLink action="#{vehicleMB.getVehicle(v.id)}" value="Edit" />
+							<h:commandLink action="#{vehicleMB.getVehicle(v.vehicleid)}" value="Edit" />
 						</h:form>
 					</td>
 					<td>
 						<h:form>
-							<h:commandLink action="#{vehicleMB.deleteVehicle(v.id)}" value="Delete" />
+							<h:commandLink action="#{vehicleMB.deleteVehicle(v.vehicleid)}" value="Delete" />
 						</h:form>
 					</td>
 					

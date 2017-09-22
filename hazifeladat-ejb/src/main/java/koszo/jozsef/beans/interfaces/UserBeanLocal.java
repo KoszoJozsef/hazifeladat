@@ -4,13 +4,13 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import koszo.jozsef.model.ApplicationUser;
+import koszo.jozsef.model.Applicationuser;
 
 
 @Local
 public interface UserBeanLocal {
-	public ApplicationUser updateUser(ApplicationUser user);
-	public ApplicationUser getUser(int id);
-	public List<ApplicationUser> getUserList();
-
+	public Applicationuser updateUser(Applicationuser user);
+	public Applicationuser getUser(int id);
+	public List<Applicationuser> getUserList();
+	
 }
