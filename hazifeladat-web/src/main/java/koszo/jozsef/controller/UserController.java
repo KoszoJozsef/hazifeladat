@@ -17,7 +17,7 @@ import koszo.jozsef.model.Role;
 
 @ViewScoped
 @ManagedBean
-public class UserMB {
+public class UserController {
 	
 	@Inject
 	UserBeanLocal userbl;
@@ -29,6 +29,8 @@ public class UserMB {
 	private String lastname;
 	private Date lastlogin;
 	private Role role;
+	
+	private Applicationuser loggedUser;
 	
 	
 	public void updateUser(){
@@ -66,14 +68,25 @@ public class UserMB {
 		
 		for(int i = 0;i < tmp.size();){
 			
-			if(username.equals(tmp.get(i).getUsername()) && password.equals(tmp.get(i).getPassword())){		
-				return "vehiclelist";			
+			if(username.equals(tmp.get(i).getUsername()) && password.equals(tmp.get(i).getPassword())){	
+				if(getUsers().get(i).getRole().equals(Role.Admin)) {
+					
+					loggedUser = tmp.get(i);
+										
+					return "adminvehiclelist";					
+				} else {
+										
+					loggedUser = tmp.get(i);
+															
+					return "uservehiclelist";
+				}
+						
 			} else {			
 				i++;			
 			}
 		}
 		
-		return "login";
+		return "error";
 	}
 	
 	public int getId() {
@@ -130,6 +143,14 @@ public class UserMB {
 
 	public void setLastlogin(Date lastlogin) {
 		this.lastlogin = lastlogin;
+	}
+
+	public Applicationuser getLogged() {
+		return loggedUser;
+	}
+
+	public void setLogged(Applicationuser logged) {
+		this.loggedUser = logged;
 	}
 
 	

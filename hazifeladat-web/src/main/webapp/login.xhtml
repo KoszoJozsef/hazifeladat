@@ -26,20 +26,21 @@
       	<table>
       		<tr>
       			<td>Username: </td>
-      			<td><h:inputText value="#{userMB.username}" /></td>
+      			<td><h:inputText value="#{userController.username}" /></td>
       		</tr>
       		<tr>
       			<td>Password: </td>
-      			<td><h:inputSecret value="#{userMB.password}" /></td>
+      			<td><h:inputSecret value="#{userController.password}" /></td>
       		</tr>
       		<tr>
       			<td>
-      				<h:commandButton action="#{userMB.login()}" value="Log in" />
+      				<h:commandButton action="#{userController.login()}" value="Log in" />
       			</td>
       		</tr>
-      	</table>   	
+      	</table>  	
       </h:form>
    </div>
+   
 
       
 </ui:composition>

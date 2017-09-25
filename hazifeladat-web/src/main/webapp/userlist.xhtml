@@ -24,19 +24,19 @@
       	
       	<div>
       		<c:choose>
-      			<c:when test="#{userMB.id > 0}">    			
-      				<h:inputHidden value="#{userMB.id}" />
-      				<h:inputHidden value="#{userMB.username}" />
-      				<h:inputHidden value="#{userMB.password}" />
+      			<c:when test="#{userController.id > 0}">    			
+      				<h:inputHidden value="#{userController.id}" />
+      				<h:inputHidden value="#{userController.username}" />
+      				<h:inputHidden value="#{userController.password}" />
       				<div>
 	      				<h:outputText value="Firstname" />
-	      				<h:inputText value="#{userMB.firstname}" />
+	      				<h:inputText value="#{userController.firstname}" />
       			</div>
       			<div>
 	   				   	<h:outputText value="Lastname" />
-	     			 	<h:inputText value="#{userMB.lastname}" />
+	     			 	<h:inputText value="#{userController.lastname}" />
       			</div>
-      				<h:commandButton action="#{userMB.updateUser()}"  value="Update" />
+      				<h:commandButton action="#{userController.updateUser()}"  value="Update" />
       			</c:when>
       		</c:choose>
       	</div>
@@ -53,7 +53,7 @@
       		</tr>
       	</thead>
       	<tbody>
-      		<ui:repeat var="u" value="#{userMB.users}">
+      		<ui:repeat var="u" value="#{userController.users}">
       			<tr>
       				<td>#{u.firstname}</td>
 					<td>#{u.lastname}</td>
@@ -61,7 +61,7 @@
 					<td>#{u.lastlogin}</td>
 					<td>
 						<h:form>
-							<h:commandLink action="#{userMB.getUser(u.userid)}" value="Edit" />
+							<h:commandLink action="#{userController.getUser(u.userid)}" value="Edit" />
 						</h:form>
 					</td>
 					
@@ -70,4 +70,7 @@
       	
       	</tbody>
       </table>
+      <h:form>
+      	<h:commandButton action="adminvehiclelist" value="Vehicle List" />
+      </h:form>
 </ui:composition>

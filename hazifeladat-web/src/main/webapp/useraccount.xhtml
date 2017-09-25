@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:c="http://java.sun.com/jsp/jstl/core">
+      <h:form>
+      	
+      	<div>
+      		<c:choose>
+      			<c:when test="#{userController.id > 0}">    			
+      				<h:inputHidden value="#{userController.id}" />
+      				<div>
+      					<h:outputText value="Username" />
+	      				<h:inputText value="#{userController.username}" />
+      				</div>
+      				<div>
+      					<h:outputText value="Password" />
+	      				<h:inputText value="#{userController.password}" />
+      				</div>
+      				<div>
+	      				<h:outputText value="Firstname" />
+	      				<h:inputText value="#{userController.firstname}" />
+      				</div>
+      				<div>
+	   				   	<h:outputText value="Lastname" />
+	     			 	<h:inputText value="#{userController.lastname}" />
+      				</div>
+      				<h:commandButton action="#{userController.updateUser()}"  value="Update" />
+      			</c:when>
+      		</c:choose>
+      	</div>
+      </h:form>
+      <table border="solid">
+      	<thead>
+      		<tr>
+      			<th>Username</th>
+      			<th>Password</th>
+	      		<th>Firstname</th>
+	      		<th>Lastname</th>
+	      		<th>Role</th>
+				<th>Last login</th>
+	      		<th></th>
+
+      		</tr>
+      	</thead>
+      	<tbody>
+      			<tr>
+      				<td>#{userController.logged.username}</td>
+      				<td>#{userController.logged.password}</td>
+      				<td>#{userController.logged.firstname}</td>
+					<td>#{userController.logged.lastname}</td>
+					<td>#{userController.logged.role}</td>
+					<td>#{userController.logged.lastlogin}</td>
+					<td>
+						<h:form>
+							<h:commandLink action="#{userController.getUser(u.userid)}" value="Edit profile" />
+						</h:form>
+					</td>
+					
+      			</tr>    	
+      	</tbody>
+      </table>
+      <h:form>
+      	<h:commandButton action="uservehiclelist" value="Vehicle List" />
+      </h:form>
+</ui:composition>

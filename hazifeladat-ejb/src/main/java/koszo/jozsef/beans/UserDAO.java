@@ -18,7 +18,7 @@ import koszo.jozsef.model.Applicationuser;
  * Session Bean implementation class UserBean
  */
 @Stateless
-public class UserBean implements UserBeanLocal {
+public class UserDAO implements UserBeanLocal {
 
 	@PersistenceContext
 	EntityManager em;
@@ -26,7 +26,7 @@ public class UserBean implements UserBeanLocal {
     /**
      * Default constructor. 
      */
-    public UserBean() {
+    public UserDAO() {
         // TODO Auto-generated constructor stub
     }
 

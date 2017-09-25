@@ -1,21 +1,23 @@
 package koszo.jozsef.controller;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import koszo.jozsef.beans.interfaces.VehicleBeanLocal;
-import koszo.jozsef.model.Extras;
+import koszo.jozsef.model.Applicationuser;
 import koszo.jozsef.model.Vehicle;
 
 
 
 @ViewScoped
 @ManagedBean
-public class VehicleMB {
+public class VehicleController {
 	
 	@Inject
 	private VehicleBeanLocal vehiclebl;
@@ -26,7 +28,22 @@ public class VehicleMB {
 	private String typeDesignation;
 	private String VIN;
 	private String comment;
-	private List<Extras> extras;
+	
+	private List<String> availableExtras;
+	private List<String> selectedExtras;
+	
+	private Applicationuser applicationuser;
+	
+	@PostConstruct
+	public void init(){
+		
+		availableExtras = new ArrayList<String>();
+		
+		availableExtras.add("Airbags");
+		availableExtras.add("OverturningSystem");
+		availableExtras.add("SeatHeating");
+		
+	}
 	
 	public void createVehicle(){
 		Vehicle v = new Vehicle();
@@ -35,10 +52,21 @@ public class VehicleMB {
 		v.setTypedesignation(typeDesignation);
 		v.setVin(VIN);
 		v.setComment(comment);
-		v.setExtras(extras);
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for(String records : selectedExtras){
+			if (sb.length() != 0)
+		        sb.append(',');
+		    sb.append(records);
+		}
+		
+		v.setSelectedextras(sb.toString());
+		
+		v.setApplicationuser(applicationuser);
 		
 		vehiclebl.createVehicle(v);
-		
+						
 	}
 	
 	public void updateVehicle(){
@@ -49,7 +77,18 @@ public class VehicleMB {
 		v.setTypedesignation(typeDesignation);
 		v.setVin(VIN);
 		v.setComment(comment);
-		v.setExtras(extras);
+
+		StringBuilder sb = new StringBuilder();
+		
+		for(String records : selectedExtras){
+			if (sb.length() != 0)
+		        sb.append(',');
+		    sb.append(records);
+		}
+		
+		v.setSelectedextras(sb.toString());
+		
+		v.setApplicationuser(applicationuser);
 		
 		vehiclebl.updateVehicle(v);
 	}
@@ -66,7 +105,9 @@ public class VehicleMB {
 		typeDesignation = v.getTypedesignation();
 		VIN = v.getVin();
 		comment = v.getComment();
-		extras = v.getExtras();
+		selectedExtras = Arrays.asList(v.getSelectedextras().split(","));
+		
+		applicationuser = v.getApplicationuser();
 	}
 	
 	public List<Vehicle> getVehicles(){
@@ -121,12 +162,29 @@ public class VehicleMB {
 		this.comment = comment;
 	}
 
-	public List<Extras> getExtras() {
-		return extras;
+
+	public List<String> getSelectedExtras() {
+		return selectedExtras;
 	}
 
-	public void setExtras(List<Extras> extras) {
-		this.extras = extras;
+	public void setSelectedExtras(List<String> selectedExtras) {
+		this.selectedExtras = selectedExtras;
+	}
+
+	public List<String> getAvailableExtras() {
+		return availableExtras;
+	}
+
+	public void setAvailableExtras(List<String> availableExtras) {
+		this.availableExtras = availableExtras;
+	}
+
+	public Applicationuser getApplicationuser() {
+		return applicationuser;
+	}
+
+	public void setApplicationuser(Applicationuser applicationuser) {
+		this.applicationuser = applicationuser;
 	}
 
 

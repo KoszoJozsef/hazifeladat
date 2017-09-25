@@ -11,7 +11,7 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Applicationuser.findAll", query="SELECT u FROM Applicationuser u")
+@NamedQuery(name="Applicationuser.findAll", query="SELECT a FROM Applicationuser a")
 public class Applicationuser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class Applicationuser implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Vehicle
-	@OneToMany(mappedBy="applicationuser")
+	@OneToMany(mappedBy="applicationuser", fetch=FetchType.EAGER)
 	private List<Vehicle> vehicles;
 
 	public Applicationuser() {

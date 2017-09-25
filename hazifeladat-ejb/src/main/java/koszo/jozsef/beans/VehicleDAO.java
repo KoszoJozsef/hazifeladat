@@ -6,10 +6,14 @@ import java.util.List;
 
 
 
+
+
+
+
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import koszo.jozsef.beans.interfaces.VehicleBeanLocal;
 import koszo.jozsef.model.Vehicle;
 
@@ -17,7 +21,7 @@ import koszo.jozsef.model.Vehicle;
  * Session Bean implementation class VehicleBean
  */
 @Stateless
-public class VehicleBean implements VehicleBeanLocal {
+public class VehicleDAO implements VehicleBeanLocal {
 
 	@PersistenceContext
 	private EntityManager em;
@@ -25,7 +29,7 @@ public class VehicleBean implements VehicleBeanLocal {
     /**
      * Default constructor. 
      */
-    public VehicleBean() {
+    public VehicleDAO() {
         // TODO Auto-generated constructor stub
     }
 

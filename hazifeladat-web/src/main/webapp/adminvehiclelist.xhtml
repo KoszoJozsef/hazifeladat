@@ -23,39 +23,41 @@
       <h:form id="vehicleform">
       	<div>
 	      	<h:outputText value="Brand" />
-	      	<h:inputText value="#{vehicleMB.brand}" />
+	      	<h:inputText value="#{vehicleController.brand}" />
       	</div>
       	<div>
 	      	<h:outputText value="Model" />
-	      	<h:inputText value="#{vehicleMB.model}" />
+	      	<h:inputText value="#{vehicleController.model}" />
       	</div>
       	<div>
 	      	<h:outputText value="TypeDesignation" />
-	      	<h:inputText value="#{vehicleMB.typeDesignation}" />
+	      	<h:inputText value="#{vehicleController.typeDesignation}" />
       	</div>
       	<div>
 	      	<h:outputText value="VIN" />
-	      	<h:inputText value="#{vehicleMB.VIN}" />
+	      	<h:inputText value="#{vehicleController.VIN}" />
       	</div>
       	<div>
 	      	<h:outputText value="Comment" />
-	      	<h:inputText value="#{vehicleMB.comment}" />
+	      	<h:inputText value="#{vehicleController.comment}" />
       	</div>
       	<div>
-      	<h:selectManyMenu value="#{vehicleMB.extras}">
-   			<f:selectItem itemValue="Airbags" itemLabel="Airbags" />
-   			<f:selectItem itemValue="OverturningSystem" itemLabel="OverTurningSystem" />
-   			<f:selectItem itemValue="SeatHeating" itemLabel="SeatHeating" />
-   		</h:selectManyMenu>
+      	<h:selectManyCheckbox value="#{vehicleController.selectedExtras}">
+   			<f:selectItems value="#{vehicleController.availableExtras}" ></f:selectItems>
+   		</h:selectManyCheckbox>
+      	</div>
+      	<div>
+      		<h:outputText value="Id of the owner" />
+      		<h:inputText value="#{vehicleController.applicationuser.userid}" />
       	</div>
       	<div>
       		<c:choose>
-      			<c:when test="#{vehicleMB.vehicleid > 0}">
-      				<h:inputHidden value="#{vehicleMB.vehicleid}" />
-      				<h:commandButton action="#{vehicleMB.updateVehicle()}"  value="Update" />
+      			<c:when test="#{vehicleController.vehicleid > 0}">
+      				<h:inputHidden value="#{vehicleController.vehicleid}" />
+      				<h:commandButton action="#{vehicleController.updateVehicle()}"  value="Update" />
       			</c:when>
       			<c:otherwise>
-      				<h:commandButton action="#{vehicleMB.createVehicle()}" value="Create" />
+      				<h:commandButton action="#{vehicleController.createVehicle()}" value="Create" />
       			</c:otherwise>
       		</c:choose>
       	</div>
@@ -70,12 +72,13 @@
 	      		<th>VIN</th>
 	      		<th>Comment</th>
 	      		<th>Extras</th>
+	      		<th>Owner</th>
 	      		<th></th>
 	      		<th></th>
       		</tr>
       	</thead>
       	<tbody>
-      		<ui:repeat var="v" value="#{vehicleMB.vehicles}">
+      		<ui:repeat var="v" value="#{vehicleController.vehicles}">
       			<tr>
       				<td>#{v.vehicleid}</td>
       				<td>#{v.brand}</td>
@@ -83,21 +86,30 @@
 					<td>#{v.typedesignation}</td>
 					<td>#{v.vin}</td>
 					<td>#{v.comment}</td>
-					<td>#{v.extras}</td>
+					<td>#{v.selectedextras}</td>
+					<td>#{v.applicationuser.firstname} #{v.applicationuser.lastname}</td>
 					<td>
 						<h:form>
-							<h:commandLink action="#{vehicleMB.getVehicle(v.vehicleid)}" value="Edit" />
+							<h:commandLink action="#{vehicleController.getVehicle(v.vehicleid)}" value="Edit" />
 						</h:form>
 					</td>
 					<td>
 						<h:form>
-							<h:commandLink action="#{vehicleMB.deleteVehicle(v.vehicleid)}" value="Delete" />
+							<h:commandLink action="#{vehicleController.deleteVehicle(v.vehicleid)}" value="Delete" />
 						</h:form>
 					</td>
 					
       			</tr>
       		</ui:repeat>
-      	
       	</tbody>
       </table>
+      
+      <br /><br />
+      
+      <h:form>
+		<h:commandButton action="adminaccount" value="Profile" />
+      </h:form>
+      <h:form>
+      	<h:commandButton action="userlist" value="List of users" />
+      </h:form>
 </ui:composition>

@@ -1,8 +1,6 @@
 package koszo.jozsef.model;
 
 import java.io.Serializable;
-import java.util.List;
-
 import javax.persistence.*;
 
 
@@ -22,10 +20,9 @@ public class Vehicle implements Serializable {
 
 	private String comment;
 
-	@Enumerated(EnumType.STRING)
-	private List<Extras> extras;
-
 	private String model;
+
+	private String selectedextras;
 
 	private String typedesignation;
 
@@ -63,20 +60,20 @@ public class Vehicle implements Serializable {
 		this.comment = comment;
 	}
 
-	public List<Extras> getExtras() {
-		return this.extras;
-	}
-
-	public void setExtras(List<Extras> extras) {
-		this.extras = extras;
-	}
-
 	public String getModel() {
 		return this.model;
 	}
 
 	public void setModel(String model) {
 		this.model = model;
+	}
+
+	public String getSelectedextras() {
+		return this.selectedextras;
+	}
+
+	public void setSelectedextras(String selectedextras) {
+		this.selectedextras = selectedextras;
 	}
 
 	public String getTypedesignation() {
