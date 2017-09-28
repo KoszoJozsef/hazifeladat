@@ -24,7 +24,6 @@
       <table border="solid">
       	<thead>
       		<tr>
-      			<th>Id</th>
 	      		<th>Brand</th>
 	      		<th>Model</th>
 	      		<th>TypeDesignation</th>
@@ -37,7 +36,6 @@
       	<tbody>
       		<ui:repeat var="v" value="#{vehicleController.vehicles}">
       			<tr>
-      				<td>#{v.vehicleid}</td>
       				<td>#{v.brand}</td>
 					<td>#{v.model}</td>
 					<td>#{v.typedesignation}</td>
@@ -53,6 +51,6 @@
       <br /><br />
       
       <h:form>
-      	<h:commandButton action="useraccount" value="Profile" />
+      	<h:commandButton action="useraccount?faces-redirect=true" value="Profile" />
       </h:form>
 </ui:composition>

@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
+import koszo.jozsef.beans.interfaces.UserBeanLocal;
 import koszo.jozsef.beans.interfaces.VehicleBeanLocal;
 import koszo.jozsef.model.Applicationuser;
 import koszo.jozsef.model.Vehicle;
@@ -21,6 +22,11 @@ public class VehicleController {
 	
 	@Inject
 	private VehicleBeanLocal vehiclebl;
+	
+	@Inject
+	private UserBeanLocal userbl;
+	
+	private String userid;
 	
 	private int vehicleid;
 	private String brand;
@@ -63,11 +69,15 @@ public class VehicleController {
 		
 		v.setSelectedextras(sb.toString());
 		
+		applicationuser = userbl.getUser(Integer.parseInt(userid));
+		
 		v.setApplicationuser(applicationuser);
 		
 		vehiclebl.createVehicle(v);
 						
 	}
+	
+
 	
 	public void updateVehicle(){
 		Vehicle v = new Vehicle();
@@ -88,6 +98,8 @@ public class VehicleController {
 		
 		v.setSelectedextras(sb.toString());
 		
+		applicationuser = userbl.getUser(Integer.parseInt(userid));
+		
 		v.setApplicationuser(applicationuser);
 		
 		vehiclebl.updateVehicle(v);
@@ -107,7 +119,9 @@ public class VehicleController {
 		comment = v.getComment();
 		selectedExtras = Arrays.asList(v.getSelectedextras().split(","));
 		
-		applicationuser = v.getApplicationuser();
+		userid = String.valueOf(v.getApplicationuser().getUserid());
+		
+		applicationuser = userbl.getUser(Integer.parseInt(userid));
 	}
 	
 	public List<Vehicle> getVehicles(){
@@ -185,6 +199,14 @@ public class VehicleController {
 
 	public void setApplicationuser(Applicationuser applicationuser) {
 		this.applicationuser = applicationuser;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 
 

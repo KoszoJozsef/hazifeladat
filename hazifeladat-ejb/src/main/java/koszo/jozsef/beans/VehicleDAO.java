@@ -62,4 +62,5 @@ public class VehicleDAO implements VehicleBeanLocal {
 		return em.createNamedQuery("Vehicle.findAll", Vehicle.class).getResultList();
 	}
 
+
 }

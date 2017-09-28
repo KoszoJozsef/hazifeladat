@@ -33,7 +33,7 @@ public class Applicationuser implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Vehicle
-	@OneToMany(mappedBy="applicationuser", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="applicationuser")
 	private List<Vehicle> vehicles;
 
 	public Applicationuser() {

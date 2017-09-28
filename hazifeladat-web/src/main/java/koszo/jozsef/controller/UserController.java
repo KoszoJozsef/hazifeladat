@@ -4,8 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 
+
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 
 import koszo.jozsef.beans.interfaces.UserBeanLocal;
@@ -15,7 +16,7 @@ import koszo.jozsef.model.Role;
 
 
 
-@ViewScoped
+@SessionScoped
 @ManagedBean
 public class UserController {
 	
@@ -44,9 +45,12 @@ public class UserController {
 		u.setRole(role);
 		
 		userbl.updateUser(u);
+		
+		loggedUser = null;
 	}
 	
 	public void getUser(int id){
+				
 		Applicationuser u = userbl.getUser(id);
 		this.id = u.getUserid();
 		username = u.getUsername();
@@ -65,20 +69,20 @@ public class UserController {
 	public String login() {
 		
 		List<Applicationuser> tmp = userbl.getUserList();
-		
+				
 		for(int i = 0;i < tmp.size();){
 			
 			if(username.equals(tmp.get(i).getUsername()) && password.equals(tmp.get(i).getPassword())){	
-				if(getUsers().get(i).getRole().equals(Role.Admin)) {
+				if(tmp.get(i).getRole().equals(Role.Admin)) {
 					
 					loggedUser = tmp.get(i);
-										
-					return "adminvehiclelist";					
+					
+					return "adminvehiclelist?faces-redirect=true";					
 				} else {
 										
 					loggedUser = tmp.get(i);
-															
-					return "uservehiclelist";
+					
+					return "uservehiclelist?faces-redirect=true";
 				}
 						
 			} else {			
@@ -88,6 +92,8 @@ public class UserController {
 		
 		return "error";
 	}
+	
+	
 	
 	public int getId() {
 		return id;

@@ -5,7 +5,7 @@
    xmlns:c="http://java.sun.com/jsp/jstl/core">
       <h:form>
       	
-      	<div>
+      	<div> 
       		<c:choose>
       			<c:when test="#{userController.id > 0}">    			
       				<h:inputHidden value="#{userController.id}" />
@@ -45,22 +45,39 @@
       	</thead>
       	<tbody>
       			<tr>
-      				<td>#{userController.logged.username}</td>
-      				<td>#{userController.logged.password}</td>
-      				<td>#{userController.logged.firstname}</td>
-					<td>#{userController.logged.lastname}</td>
-					<td>#{userController.logged.role}</td>
-					<td>#{userController.logged.lastlogin}</td>
-					<td>
-						<h:form>
-							<h:commandLink action="#{userController.getUser(u.userid)}" value="Edit profile" />
-						</h:form>
-					</td>
-					
+	      			<c:choose>
+		      			<c:when test="#{userController.logged != null}" >
+		      				<td>#{userController.logged.username}</td>
+		      				<td>#{userController.logged.password}</td>
+		      				<td>#{userController.logged.firstname}</td>
+							<td>#{userController.logged.lastname}</td>
+							<td>#{userController.logged.role}</td>
+							<td>#{userController.logged.lastlogin}</td>
+							<td>
+								<h:form>
+									<h:commandLink action="#{userController.getUser(userController.logged.userid)}" value="Edit profile" />
+								</h:form>
+							</td>
+		      			</c:when>
+		      			<c:otherwise>
+		      				<td>#{userController.username}</td>
+		      				<td>#{userController.password}</td>
+		      				<td>#{userController.firstname}</td>
+							<td>#{userController.lastname}</td>
+							<td>#{userController.role}</td>
+							<td>#{userController.lastlogin}</td>
+							<td>
+								<h:form>
+									<h:commandLink action="#{userController.getUser(userController.id)}" value="Edit profile" />
+								</h:form>
+							</td>
+		      			</c:otherwise>
+					</c:choose>
+						
       			</tr>      	
       	</tbody>
       </table>
       <h:form>
-      	<h:commandButton action="adminvehiclelist" value="Vehicle List" />
+      	<h:commandButton action="adminvehiclelist?faces-redirect=true" value="Vehicle List" />
       </h:form>
 </ui:composition>

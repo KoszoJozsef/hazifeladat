@@ -48,7 +48,7 @@
       	</div>
       	<div>
       		<h:outputText value="Id of the owner" />
-      		<h:inputText value="#{vehicleController.applicationuser.userid}" />
+      		<h:inputText value="#{vehicleController.userid}" />
       	</div>
       	<div>
       		<c:choose>
@@ -107,9 +107,9 @@
       <br /><br />
       
       <h:form>
-		<h:commandButton action="adminaccount" value="Profile" />
+		<h:commandButton action="adminaccount?faces-redirect=true" value="Profile" />
       </h:form>
       <h:form>
-      	<h:commandButton action="userlist" value="List of users" />
+      	<h:commandButton action="userlist?faces-redirect=true" value="List of users" />
       </h:form>
 </ui:composition>
