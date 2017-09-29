@@ -53,4 +53,7 @@
       <h:form>
       	<h:commandButton action="useraccount?faces-redirect=true" value="Profile" />
       </h:form>
+      <h:form>
+      	<h:commandButton action="#{userController.logout()}" value="Log out" />
+      </h:form>
 </ui:composition>

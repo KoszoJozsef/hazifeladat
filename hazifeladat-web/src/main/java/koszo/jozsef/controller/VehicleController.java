@@ -6,8 +6,9 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import javax.validation.constraints.Pattern;
 
 import koszo.jozsef.beans.interfaces.UserBeanLocal;
 import koszo.jozsef.beans.interfaces.VehicleBeanLocal;
@@ -16,7 +17,7 @@ import koszo.jozsef.model.Vehicle;
 
 
 
-@ViewScoped
+@SessionScoped
 @ManagedBean
 public class VehicleController {
 	
@@ -29,9 +30,12 @@ public class VehicleController {
 	private String userid;
 	
 	private int vehicleid;
+	
 	private String brand;
 	private String model;
 	private String typeDesignation;
+	
+	@Pattern(regexp = "^[A-HJ-NPR-Z\\d]{8}[\\dX][A-HJ-NPR-Z\\d]{2}\\d{6}$")
 	private String VIN;
 	private String comment;
 	
@@ -74,6 +78,8 @@ public class VehicleController {
 		v.setApplicationuser(applicationuser);
 		
 		vehiclebl.createVehicle(v);
+		
+		clear();
 						
 	}
 	
@@ -103,6 +109,8 @@ public class VehicleController {
 		v.setApplicationuser(applicationuser);
 		
 		vehiclebl.updateVehicle(v);
+		
+		clear();
 	}
 	
 	public void deleteVehicle(int id){
@@ -126,6 +134,22 @@ public class VehicleController {
 	
 	public List<Vehicle> getVehicles(){
 		return vehiclebl.getVehicleList();
+	}
+	
+	public String clear() {
+
+		vehicleid = 0;
+		
+		brand = null;
+		model = null;
+		typeDesignation = null;
+		VIN = null;
+		comment = null;
+		selectedExtras = null;
+		userid = null;
+		applicationuser = null;
+		return null;
+		
 	}
 
 	public int getVehicleid() {

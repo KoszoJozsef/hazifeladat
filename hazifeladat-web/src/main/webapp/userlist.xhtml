@@ -24,7 +24,7 @@
       	
       	<div>
       		<c:choose>
-      			<c:when test="#{userController.id > 0}">    			
+      			<c:when test="#{userController.id > 0}">   			
       				<h:inputHidden value="#{userController.id}" />
       				<h:inputHidden value="#{userController.username}" />
       				<h:inputHidden value="#{userController.password}" />
@@ -54,8 +54,8 @@
       	</thead>
       	<tbody>
       		<ui:repeat var="u" value="#{userController.users}">
-      			<tr>
-      				<td>#{u.firstname}</td>
+	      		<tr>
+	      			<td>#{u.firstname}</td>
 					<td>#{u.lastname}</td>
 					<td>#{u.role}</td>
 					<td>#{u.lastlogin}</td>
@@ -63,9 +63,8 @@
 						<h:form>
 							<h:commandLink action="#{userController.getUser(u.userid)}" value="Edit" />
 						</h:form>
-					</td>
-					
-      			</tr>
+					</td>					
+	      		</tr>   			
       		</ui:repeat>
       	
       	</tbody>

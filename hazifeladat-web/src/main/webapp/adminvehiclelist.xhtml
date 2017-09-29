@@ -20,36 +20,43 @@
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
    xmlns:c="http://java.sun.com/jsp/jstl/core">
-      <h:form id="vehicleform">
+      <h:form>
       	<div>
-	      	<h:outputText value="Brand" />
+	      	<h:outputText value="Brand: " />
 	      	<h:inputText value="#{vehicleController.brand}" />
       	</div>
+      	<br />
       	<div>
-	      	<h:outputText value="Model" />
+	      	<h:outputText value="Model: " />
 	      	<h:inputText value="#{vehicleController.model}" />
       	</div>
+      	<br />
       	<div>
-	      	<h:outputText value="TypeDesignation" />
+	      	<h:outputText value="TypeDesignation: " />
 	      	<h:inputText value="#{vehicleController.typeDesignation}" />
       	</div>
+      	<br />
       	<div>
-	      	<h:outputText value="VIN" />
+	      	<h:outputText value="VIN: " />
 	      	<h:inputText value="#{vehicleController.VIN}" />
       	</div>
+      	<br />
       	<div>
-	      	<h:outputText value="Comment" />
+	      	<h:outputText value="Comment: " />
 	      	<h:inputText value="#{vehicleController.comment}" />
       	</div>
+      	<br />
       	<div>
-      	<h:selectManyCheckbox value="#{vehicleController.selectedExtras}">
+      	<h:selectManyCheckbox collectionType="java.util.ArrayList" value="#{vehicleController.selectedExtras}">
    			<f:selectItems value="#{vehicleController.availableExtras}" ></f:selectItems>
    		</h:selectManyCheckbox>
       	</div>
+      	<br />
       	<div>
-      		<h:outputText value="Id of the owner" />
+      		<h:outputText value="Id of the owner: " />
       		<h:inputText value="#{vehicleController.userid}" />
       	</div>
+      	<br />
       	<div>
       		<c:choose>
       			<c:when test="#{vehicleController.vehicleid > 0}">
@@ -62,7 +69,7 @@
       		</c:choose>
       	</div>
       </h:form>
-      <table border="solid">
+      <table border="solid" cellpadding="2" cellspacing="2">
       	<thead>
       		<tr>
       			<th>Id</th>
@@ -73,13 +80,13 @@
 	      		<th>Comment</th>
 	      		<th>Extras</th>
 	      		<th>Owner</th>
-	      		<th></th>
-	      		<th></th>
+	      		<th>Edit Vehicle</th>
+	      		<th>Delete Vehicle</th>
       		</tr>
       	</thead>
       	<tbody>
       		<ui:repeat var="v" value="#{vehicleController.vehicles}">
-      			<tr>
+      			<tr align="center">
       				<td>#{v.vehicleid}</td>
       				<td>#{v.brand}</td>
 					<td>#{v.model}</td>
@@ -106,10 +113,20 @@
       
       <br /><br />
       
+      
       <h:form>
 		<h:commandButton action="adminaccount?faces-redirect=true" value="Profile" />
       </h:form>
+      
+      <br />
+      
       <h:form>
       	<h:commandButton action="userlist?faces-redirect=true" value="List of users" />
+      </h:form>
+      
+      <br />
+      
+      <h:form>
+      	<h:commandButton action="#{userController.logout()}" value="Log out" />
       </h:form>
 </ui:composition>

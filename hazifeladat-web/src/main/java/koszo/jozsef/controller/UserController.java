@@ -1,5 +1,6 @@
 package koszo.jozsef.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import koszo.jozsef.beans.interfaces.UserBeanLocal;
@@ -28,11 +30,21 @@ public class UserController {
 	private String password;
 	private String firstname;
 	private String lastname;
-	private Date lastlogin;
+	private String lastlogin;
 	private Role role;
 	
 	private Applicationuser loggedUser;
 	
+	public void clear() {
+	
+		id = 0;
+		username = null;
+		password = null;
+		firstname = null;
+		lastname = null;
+		lastlogin = null;
+		role = null;
+	}
 	
 	public void updateUser(){
 		Applicationuser u = new Applicationuser();
@@ -42,11 +54,28 @@ public class UserController {
 		u.setLastlogin(lastlogin);
 		u.setFirstname(firstname);
 		u.setLastname(lastname);
+		u.setLastlogin(lastlogin);
 		u.setRole(role);
 		
 		userbl.updateUser(u);
 		
-		loggedUser = null;
+		clear();
+		
+	}
+	
+	public void updateLoggedUser() {
+		loggedUser.setUserid(id);
+		loggedUser.setUsername(username);
+		loggedUser.setPassword(password);
+		loggedUser.setLastlogin(lastlogin);
+		loggedUser.setFirstname(firstname);
+		loggedUser.setLastname(lastname);
+		loggedUser.setRole(role);
+		loggedUser.setLastlogin(lastlogin);
+		
+		userbl.updateUser(loggedUser);
+		
+		clear();
 	}
 	
 	public void getUser(int id){
@@ -59,28 +88,61 @@ public class UserController {
 		firstname = u.getFirstname();
 		lastname = u.getLastname();
 		role = u.getRole();
+		lastlogin = u.getLastlogin();
 
 	}
 	
-	public List<Applicationuser> getUsers(){
-		return userbl.getUserList();
+	public List<Applicationuser> getUsers(){		
+		
+		List<Applicationuser> tmp = userbl.getUserList();
+		
+		for(int i = 0; i < tmp.size(); i++){
+			if(tmp.get(i).getRole().equals(Role.Admin)){
+				tmp.remove(i);
+			}
+		}
+		
+		return tmp;
+
 	}
 	
 	public String login() {
 		
 		List<Applicationuser> tmp = userbl.getUserList();
+		
+		FacesContext context = FacesContext.getCurrentInstance();
 				
 		for(int i = 0;i < tmp.size();){
 			
 			if(username.equals(tmp.get(i).getUsername()) && password.equals(tmp.get(i).getPassword())){	
 				if(tmp.get(i).getRole().equals(Role.Admin)) {
-					
-					loggedUser = tmp.get(i);
-					
-					return "adminvehiclelist?faces-redirect=true";					
-				} else {
 										
 					loggedUser = tmp.get(i);
+					
+					Date dt = new Date();
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					
+					loggedUser.setLastlogin(sdf.format(dt));
+					
+					userbl.updateUser(loggedUser);
+										
+					context.getExternalContext().getSessionMap().put("applicationuser", loggedUser);					
+										
+					return "adminvehiclelist?faces-redirect=true";					
+				} else {
+					
+					loggedUser = tmp.get(i);
+					
+					Date dt = new Date();
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					
+					loggedUser.setLastlogin(sdf.format(dt));
+					
+					userbl.updateUser(loggedUser);
+										
+					context.getExternalContext().getSessionMap().put("applicationuser", loggedUser);
 					
 					return "uservehiclelist?faces-redirect=true";
 				}
@@ -93,6 +155,12 @@ public class UserController {
 		return "error";
 	}
 	
+	public String logout() {
+		
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        
+        return "login?faces-redirect=true";
+    }
 	
 	
 	public int getId() {
@@ -143,11 +211,11 @@ public class UserController {
 		this.role = role;
 	}
 
-	public Date getLastlogin() {
+	public String getLastlogin() {
 		return lastlogin;
 	}
 
-	public void setLastlogin(Date lastlogin) {
+	public void setLastlogin(String lastlogin) {
 		this.lastlogin = lastlogin;
 	}
 

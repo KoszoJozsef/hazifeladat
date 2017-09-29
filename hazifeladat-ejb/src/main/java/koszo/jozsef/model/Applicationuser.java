@@ -1,7 +1,9 @@
 package koszo.jozsef.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +22,7 @@ public class Applicationuser implements Serializable {
 
 	private String firstname;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastlogin;
+	private String lastlogin;
 
 	private String lastname;
 
@@ -33,7 +34,7 @@ public class Applicationuser implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Vehicle
-	@OneToMany(mappedBy="applicationuser")
+	@OneToMany(mappedBy="applicationuser", fetch = FetchType.EAGER)
 	private List<Vehicle> vehicles;
 
 	public Applicationuser() {
@@ -55,11 +56,11 @@ public class Applicationuser implements Serializable {
 		this.firstname = firstname;
 	}
 
-	public Date getLastlogin() {
+	public String getLastlogin() {
 		return this.lastlogin;
 	}
 
-	public void setLastlogin(Date lastlogin) {
+	public void setLastlogin(String lastlogin) {
 		this.lastlogin = lastlogin;
 	}
 
@@ -115,6 +116,14 @@ public class Applicationuser implements Serializable {
 		vehicle.setApplicationuser(null);
 
 		return vehicle;
+	}
+
+	@Override
+	public String toString() {
+		return "Applicationuser [userid=" + userid + ", firstname=" + firstname
+				+ ", lastlogin=" + lastlogin + ", lastname=" + lastname
+				+ ", password=" + password + ", role=" + role + ", username="
+				+ username + ", vehicles=" + vehicles + "]";
 	}
 
 }
