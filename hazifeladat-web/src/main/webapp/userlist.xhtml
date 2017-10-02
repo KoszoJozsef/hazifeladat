@@ -20,6 +20,9 @@
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
    xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <f:metadata>
+   	<f:event listener="#{userController.checkLogin}" type="preRenderView"></f:event>
+   </f:metadata>
       <h:form>
       	
       	<div>
@@ -54,7 +57,7 @@
       	</thead>
       	<tbody>
       		<ui:repeat var="u" value="#{userController.users}">
-	      		<tr>
+	      		<tr align="center">
 	      			<td>#{u.firstname}</td>
 					<td>#{u.lastname}</td>
 					<td>#{u.role}</td>

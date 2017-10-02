@@ -20,25 +20,50 @@
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
    xmlns:c="http://java.sun.com/jsp/jstl/core">
-      <h:form>
+   <h:outputScript library="javax.faces" name="jsf.js"/>
+   <f:metadata>
+   	<f:event listener="#{userController.checkLogin}" type="preRenderView"></f:event>
+   </f:metadata>
+      <h:form id="form">
       	<div>
-	      	<h:outputText value="Brand: " />
-	      	<h:inputText value="#{vehicleController.brand}" />
+      		<h:outputText value="Brand: " />
+	      	<h:selectOneMenu id="brand" value="#{vehicleController.selectedBrand}" required="true" requiredMessage=" Please select a brand." >
+    			<f:selectItem itemValue="#{null}" itemLabel="-- select --" />
+    			<f:selectItems value="#{vehicleController.availableBrands}" />
+    			<f:ajax listener="#{vehicleController.changeBrand}" render="model" />
+			</h:selectOneMenu>
+			<h:message for="brand" style="color:red" />
       	</div>
       	<br />
       	<div>
 	      	<h:outputText value="Model: " />
-	      	<h:inputText value="#{vehicleController.model}" />
+	      	<h:selectOneMenu id="model" value="#{vehicleController.selectedModel}" required="true" requiredMessage=" Please select a model.">
+   				 <f:selectItem itemValue="#{null}" itemLabel="-- select --" />
+   				 <f:selectItems value="#{vehicleController.availableModels}" />
+			</h:selectOneMenu>
+			<h:message for="model" style="color:red" />
       	</div>
       	<br />
       	<div>
-	      	<h:outputText value="TypeDesignation: " />
-	      	<h:inputText value="#{vehicleController.typeDesignation}" />
+	      	<h:outputText value="Type designation: " />
+	      	<h:selectOneMenu id="typedesignation" value="#{vehicleController.typeDesignation}" required="true" requiredMessage=" Please select a type designation">
+	      		<f:selectItem itemValue="#{null}" itemLabel="--select--"/>
+				<f:selectItem itemValue="L" itemLabel="L"/>
+				<f:selectItem itemValue="DX" itemLabel="DX"/>
+				<f:selectItem itemValue="LX" itemLabel="LX"/>
+				<f:selectItem itemValue="CE" itemLabel="CE"/>
+				<f:selectItem itemValue="LE" itemLabel="LE"/>
+				<f:selectItem itemValue="DL" itemLabel="DL"/>
+				<f:selectItem itemValue="GL" itemLabel="GL"/>
+				<f:selectItem itemValue="GLE" itemLabel="GLE"/>
+	      	</h:selectOneMenu>
+	      	<h:message for="typedesignation" style="color:red" />
       	</div>
       	<br />
       	<div>
 	      	<h:outputText value="VIN: " />
-	      	<h:inputText value="#{vehicleController.VIN}" />
+	      	<h:inputText id="VIN" value="#{vehicleController.VIN}" required="true" requiredMessage="  VIN is required!"/>
+	      	<h:message for="VIN" style="color:red" />
       	</div>
       	<br />
       	<div>
@@ -54,7 +79,8 @@
       	<br />
       	<div>
       		<h:outputText value="Id of the owner: " />
-      		<h:inputText value="#{vehicleController.userid}" />
+      		<h:inputText id="owner" value="#{vehicleController.userid}" required="true" requiredMessage=" Please enter an id."/>
+      		<h:message for="owner" style="color:red"/>
       	</div>
       	<br />
       	<div>
@@ -72,10 +98,9 @@
       <table border="solid" cellpadding="2" cellspacing="2">
       	<thead>
       		<tr>
-      			<th>Id</th>
 	      		<th>Brand</th>
 	      		<th>Model</th>
-	      		<th>TypeDesignation</th>
+	      		<th>Type Designation</th>
 	      		<th>VIN</th>
 	      		<th>Comment</th>
 	      		<th>Extras</th>
@@ -87,7 +112,6 @@
       	<tbody>
       		<ui:repeat var="v" value="#{vehicleController.vehicles}">
       			<tr align="center">
-      				<td>#{v.vehicleid}</td>
       				<td>#{v.brand}</td>
 					<td>#{v.model}</td>
 					<td>#{v.typedesignation}</td>

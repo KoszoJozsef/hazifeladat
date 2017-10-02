@@ -6,6 +6,8 @@ import java.util.List;
 
 
 
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -34,6 +36,8 @@ public class UserController {
 	private Role role;
 	
 	private Applicationuser loggedUser;
+	
+	private boolean isLogin = false;
 	
 	public void clear() {
 	
@@ -106,7 +110,23 @@ public class UserController {
 
 	}
 	
-	public String login() {
+	public void checkLogin() {
+		if(!this.isLogin) {
+			doRedirect("login.jsf");
+		}
+	}
+	
+	private void doRedirect(String url) {
+		try {
+			FacesContext fc = FacesContext.getCurrentInstance();
+			fc.getExternalContext().redirect(url);
+			
+		} catch (Exception e) {
+			
+		}
+	}
+	
+	public void login() {
 		
 		List<Applicationuser> tmp = userbl.getUserList();
 		
@@ -119,6 +139,8 @@ public class UserController {
 										
 					loggedUser = tmp.get(i);
 					
+					isLogin = true;
+					
 					Date dt = new Date();
 					
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -129,10 +151,13 @@ public class UserController {
 										
 					context.getExternalContext().getSessionMap().put("applicationuser", loggedUser);					
 										
-					return "adminvehiclelist?faces-redirect=true";					
+					doRedirect("adminvehiclelist.jsf");
+					
 				} else {
 					
 					loggedUser = tmp.get(i);
+					
+					isLogin = true;
 					
 					Date dt = new Date();
 					
@@ -144,7 +169,8 @@ public class UserController {
 										
 					context.getExternalContext().getSessionMap().put("applicationuser", loggedUser);
 					
-					return "uservehiclelist?faces-redirect=true";
+					doRedirect("uservehiclelist.jsf");
+					
 				}
 						
 			} else {			
@@ -152,14 +178,18 @@ public class UserController {
 			}
 		}
 		
-		return "error";
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		FacesMessage facesMessage = new FacesMessage(" Invalid username or password!");
+		facesContext.addMessage("login:username", facesMessage);
 	}
 	
-	public String logout() {
+	public void logout() {
 		
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		isLogin = false;
+		
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();  
         
-        return "login?faces-redirect=true";
+        doRedirect("login.jsf");
     }
 	
 	

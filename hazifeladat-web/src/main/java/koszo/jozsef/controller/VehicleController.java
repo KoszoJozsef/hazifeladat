@@ -5,10 +5,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.validation.constraints.Pattern;
+
+
 
 import koszo.jozsef.beans.interfaces.UserBeanLocal;
 import koszo.jozsef.beans.interfaces.VehicleBeanLocal;
@@ -17,7 +22,7 @@ import koszo.jozsef.model.Vehicle;
 
 
 
-@SessionScoped
+@ViewScoped
 @ManagedBean
 public class VehicleController {
 	
@@ -31,18 +36,23 @@ public class VehicleController {
 	
 	private int vehicleid;
 	
-	private String brand;
-	private String model;
 	private String typeDesignation;
 	
-	@Pattern(regexp = "^[A-HJ-NPR-Z\\d]{8}[\\dX][A-HJ-NPR-Z\\d]{2}\\d{6}$")
+	@Pattern(regexp = "^[A-HJ-NPR-Z\\d]{8}[\\dX][A-HJ-NPR-Z\\d]{2}\\d{6}$", message = " Invalid VIN!")
 	private String VIN;
 	private String comment;
 	
 	private List<String> availableExtras;
 	private List<String> selectedExtras;
 	
+	private List<String> availableBrands;
+	private String selectedBrand;
+	
+	private List<String> availableModels;
+	private String selectedModel;
+	
 	private Applicationuser applicationuser;
+		
 	
 	@PostConstruct
 	public void init(){
@@ -53,12 +63,46 @@ public class VehicleController {
 		availableExtras.add("OverturningSystem");
 		availableExtras.add("SeatHeating");
 		
+		availableBrands = new ArrayList<String>();
+		
+		availableBrands.add("Suzuki");
+		availableBrands.add("Fiat");
+		availableBrands.add("Skoda");
+		
+		selectedBrand = null;		
+		
+	}
+	
+	public void changeBrand(AjaxBehaviorEvent event) {
+				
+		availableModels = new ArrayList<String>();		
+
+		if(selectedBrand.equalsIgnoreCase("Suzuki")) {
+			availableModels.add("Alto");
+			availableModels.add("Ignis");
+			availableModels.add("Swift");
+		}
+		
+		if(selectedBrand.equalsIgnoreCase("Fiat")) {
+			availableModels.add("Bravo");
+			availableModels.add("Croma");
+			availableModels.add("Punto");
+		}
+		
+		if(selectedBrand.equalsIgnoreCase("Skoda")) {
+			availableModels.add("Fabia");
+			availableModels.add("Forman");
+			availableModels.add("Rapid");
+		}
+		
+		selectedModel = null;
+		
 	}
 	
 	public void createVehicle(){
 		Vehicle v = new Vehicle();
-		v.setBrand(brand);
-		v.setModel(model);
+		v.setBrand(selectedBrand);
+		v.setModel(selectedModel);
 		v.setTypedesignation(typeDesignation);
 		v.setVin(VIN);
 		v.setComment(comment);
@@ -75,11 +119,14 @@ public class VehicleController {
 		
 		applicationuser = userbl.getUser(Integer.parseInt(userid));
 		
-		v.setApplicationuser(applicationuser);
-		
-		vehiclebl.createVehicle(v);
-		
-		clear();
+		if(applicationuser != null){
+			v.setApplicationuser(applicationuser);
+			vehiclebl.createVehicle(v);
+		} else {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			FacesMessage facesMessage = new FacesMessage(" User with an id of " + userid + " was not found!");
+			facesContext.addMessage("form:owner", facesMessage);
+		}		
 						
 	}
 	
@@ -88,8 +135,8 @@ public class VehicleController {
 	public void updateVehicle(){
 		Vehicle v = new Vehicle();
 		v.setVehicleid(vehicleid);
-		v.setBrand(brand);
-		v.setModel(model);
+		v.setBrand(selectedBrand);
+		v.setModel(selectedModel);
 		v.setTypedesignation(typeDesignation);
 		v.setVin(VIN);
 		v.setComment(comment);
@@ -106,11 +153,14 @@ public class VehicleController {
 		
 		applicationuser = userbl.getUser(Integer.parseInt(userid));
 		
-		v.setApplicationuser(applicationuser);
-		
-		vehiclebl.updateVehicle(v);
-		
-		clear();
+		if(applicationuser != null){
+			v.setApplicationuser(applicationuser);
+			vehiclebl.updateVehicle(v);
+		} else {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			FacesMessage facesMessage = new FacesMessage(" User with an id of " + userid + " was not found!");
+			facesContext.addMessage("form:owner", facesMessage);
+		}
 	}
 	
 	public void deleteVehicle(int id){
@@ -120,9 +170,9 @@ public class VehicleController {
 	public void getVehicle(int vehicleid){
 		Vehicle v = vehiclebl.getVehicle(vehicleid);
 		this.vehicleid = v.getVehicleid();
-		brand = v.getBrand();
-		model = v.getModel();
-		typeDesignation = v.getTypedesignation();
+		selectedBrand = null;
+		selectedModel = null;
+		typeDesignation = null;
 		VIN = v.getVin();
 		comment = v.getComment();
 		selectedExtras = Arrays.asList(v.getSelectedextras().split(","));
@@ -136,21 +186,6 @@ public class VehicleController {
 		return vehiclebl.getVehicleList();
 	}
 	
-	public String clear() {
-
-		vehicleid = 0;
-		
-		brand = null;
-		model = null;
-		typeDesignation = null;
-		VIN = null;
-		comment = null;
-		selectedExtras = null;
-		userid = null;
-		applicationuser = null;
-		return null;
-		
-	}
 
 	public int getVehicleid() {
 		return vehicleid;
@@ -158,22 +193,6 @@ public class VehicleController {
 
 	public void setVehicleid(int vehicleid) {
 		this.vehicleid = vehicleid;
-	}
-
-	public String getBrand() {
-		return brand;
-	}
-
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
-	public String getModel() {
-		return model;
-	}
-
-	public void setModel(String model) {
-		this.model = model;
 	}
 
 	public String getTypeDesignation() {
@@ -233,6 +252,36 @@ public class VehicleController {
 		this.userid = userid;
 	}
 
+	public List<String> getAvailableBrands() {
+		return availableBrands;
+	}
 
+	public void setAvailableBrands(List<String> availableBrands) {
+		this.availableBrands = availableBrands;
+	}
+
+	public String getSelectedBrand() {
+		return selectedBrand;
+	}
+
+	public void setSelectedBrand(String selectedBrand) {
+		this.selectedBrand = selectedBrand;
+	}
+
+	public List<String> getAvailableModels() {
+		return availableModels;
+	}
+
+	public void setAvailableModels(List<String> availableModels) {
+		this.availableModels = availableModels;
+	}
+
+	public String getSelectedModel() {
+		return selectedModel;
+	}
+
+	public void setSelectedModel(String selectedModel) {
+		this.selectedModel = selectedModel;
+	}
 	
 }

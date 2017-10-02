@@ -22,22 +22,28 @@
    xmlns:c="http://java.sun.com/jsp/jstl/core">
    
    <div>
-      <h:form>
+      <h:form id="login">
       	<table>
       		<tr>
       			<td>Username: </td>
-      			<td><h:inputText value="#{userController.username}" /></td>
+      			<td>
+      				<h:inputText id="username" value="#{userController.username}"  required="true" requiredMessage=" Username is required!" />
+      				<h:message for="username" style="color:red"/> 
+      			</td>
       		</tr>
       		<tr>
       			<td>Password: </td>
-      			<td><h:inputSecret value="#{userController.password}" /></td>
+      			<td>
+      				<h:inputSecret id="password" value="#{userController.password}" required="true" requiredMessage=" Password is required!" />
+      				<h:message for="password" style="color:red"/> 
+      			</td>
       		</tr>
       		<tr>
       			<td>
       				<h:commandButton action="#{userController.login()}" value="Log in" />
       			</td>
-      		</tr>
-      	</table>  	
+      		</tr>     		
+      	</table>
       </h:form>
    </div>
    

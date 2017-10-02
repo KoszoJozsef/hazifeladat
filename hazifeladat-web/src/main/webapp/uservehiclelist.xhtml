@@ -20,6 +20,9 @@
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
    xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <f:metadata>
+   	<f:event listener="#{userController.checkLogin}" type="preRenderView"></f:event>
+   </f:metadata>
       
       <table border="solid">
       	<thead>
@@ -35,7 +38,7 @@
       	</thead>
       	<tbody>
       		<ui:repeat var="v" value="#{vehicleController.vehicles}">
-      			<tr>
+      			<tr align="center">
       				<td>#{v.brand}</td>
 					<td>#{v.model}</td>
 					<td>#{v.typedesignation}</td>
