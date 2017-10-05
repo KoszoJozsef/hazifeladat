@@ -39,6 +39,8 @@ public class UserController {
 	
 	private boolean isLogin = false;
 	
+	private boolean notLogged = true;
+	
 	public void clear() {
 	
 		id = 0;
@@ -110,8 +112,17 @@ public class UserController {
 
 	}
 	
+	public void notLogged(){
+		if(!this.isLogin && !notLogged) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			FacesMessage facesMessage = new FacesMessage(" You are not logged in! Please log in.");
+			facesContext.addMessage("login", facesMessage);
+		}
+	}
+	
 	public void checkLogin() {
 		if(!this.isLogin) {
+			notLogged = false;
 			doRedirect("login.jsf");
 		}
 	}

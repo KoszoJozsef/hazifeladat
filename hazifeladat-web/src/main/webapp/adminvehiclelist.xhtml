@@ -23,78 +23,9 @@
    <h:outputScript library="javax.faces" name="jsf.js"/>
    <f:metadata>
    	<f:event listener="#{userController.checkLogin}" type="preRenderView"></f:event>
+   	
    </f:metadata>
-      <h:form id="form">
-      	<div>
-      		<h:outputText value="Brand: " />
-	      	<h:selectOneMenu id="brand" value="#{vehicleController.selectedBrand}" required="true" requiredMessage=" Please select a brand." >
-    			<f:selectItem itemValue="#{null}" itemLabel="-- select --" />
-    			<f:selectItems value="#{vehicleController.availableBrands}" />
-    			<f:ajax listener="#{vehicleController.changeBrand}" render="model" />
-			</h:selectOneMenu>
-			<h:message for="brand" style="color:red" />
-      	</div>
-      	<br />
-      	<div>
-	      	<h:outputText value="Model: " />
-	      	<h:selectOneMenu id="model" value="#{vehicleController.selectedModel}" required="true" requiredMessage=" Please select a model.">
-   				 <f:selectItem itemValue="#{null}" itemLabel="-- select --" />
-   				 <f:selectItems value="#{vehicleController.availableModels}" />
-			</h:selectOneMenu>
-			<h:message for="model" style="color:red" />
-      	</div>
-      	<br />
-      	<div>
-	      	<h:outputText value="Type designation: " />
-	      	<h:selectOneMenu id="typedesignation" value="#{vehicleController.typeDesignation}" required="true" requiredMessage=" Please select a type designation">
-	      		<f:selectItem itemValue="#{null}" itemLabel="--select--"/>
-				<f:selectItem itemValue="L" itemLabel="L"/>
-				<f:selectItem itemValue="DX" itemLabel="DX"/>
-				<f:selectItem itemValue="LX" itemLabel="LX"/>
-				<f:selectItem itemValue="CE" itemLabel="CE"/>
-				<f:selectItem itemValue="LE" itemLabel="LE"/>
-				<f:selectItem itemValue="DL" itemLabel="DL"/>
-				<f:selectItem itemValue="GL" itemLabel="GL"/>
-				<f:selectItem itemValue="GLE" itemLabel="GLE"/>
-	      	</h:selectOneMenu>
-	      	<h:message for="typedesignation" style="color:red" />
-      	</div>
-      	<br />
-      	<div>
-	      	<h:outputText value="VIN: " />
-	      	<h:inputText id="VIN" value="#{vehicleController.VIN}" required="true" requiredMessage="  VIN is required!"/>
-	      	<h:message for="VIN" style="color:red" />
-      	</div>
-      	<br />
-      	<div>
-	      	<h:outputText value="Comment: " />
-	      	<h:inputText value="#{vehicleController.comment}" />
-      	</div>
-      	<br />
-      	<div>
-      	<h:selectManyCheckbox collectionType="java.util.ArrayList" value="#{vehicleController.selectedExtras}">
-   			<f:selectItems value="#{vehicleController.availableExtras}" ></f:selectItems>
-   		</h:selectManyCheckbox>
-      	</div>
-      	<br />
-      	<div>
-      		<h:outputText value="Id of the owner: " />
-      		<h:inputText id="owner" value="#{vehicleController.userid}" required="true" requiredMessage=" Please enter an id."/>
-      		<h:message for="owner" style="color:red"/>
-      	</div>
-      	<br />
-      	<div>
-      		<c:choose>
-      			<c:when test="#{vehicleController.vehicleid > 0}">
-      				<h:inputHidden value="#{vehicleController.vehicleid}" />
-      				<h:commandButton action="#{vehicleController.updateVehicle()}"  value="Update" />
-      			</c:when>
-      			<c:otherwise>
-      				<h:commandButton action="#{vehicleController.createVehicle()}" value="Create" />
-      			</c:otherwise>
-      		</c:choose>
-      	</div>
-      </h:form>
+
       <table border="solid" cellpadding="2" cellspacing="2">
       	<thead>
       		<tr>
@@ -121,7 +52,9 @@
 					<td>#{v.applicationuser.firstname} #{v.applicationuser.lastname}</td>
 					<td>
 						<h:form>
-							<h:commandLink action="#{vehicleController.getVehicle(v.vehicleid)}" value="Edit" />
+							<h:commandLink action="#{vehicleController.getVehicle(v.vehicleid)}" value="Edit">
+								<f:actionListener binding="#{vehicleController.doRedirect('editvehicles.jsf')}"></f:actionListener>
+							</h:commandLink>
 						</h:form>
 					</td>
 					<td>
@@ -136,6 +69,12 @@
       </table>
       
       <br /><br />
+      
+      <h:form>
+		<h:commandButton action="editvehicles?faces-redirect=true" value="Add new vehicle" />
+      </h:form>
+      
+      <br />
       
       
       <h:form>

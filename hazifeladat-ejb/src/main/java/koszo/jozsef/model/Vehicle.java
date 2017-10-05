@@ -1,6 +1,7 @@
 package koszo.jozsef.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 

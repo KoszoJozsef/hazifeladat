@@ -13,8 +13,6 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.validation.constraints.Pattern;
 
-
-
 import koszo.jozsef.beans.interfaces.UserBeanLocal;
 import koszo.jozsef.beans.interfaces.VehicleBeanLocal;
 import koszo.jozsef.model.Applicationuser;
@@ -32,13 +30,13 @@ public class VehicleController {
 	@Inject
 	private UserBeanLocal userbl;
 	
+	@Pattern(regexp = "^[0-9]*$", message = " Invalid input! Please enter number(s) only!")
 	private String userid;
 	
 	private int vehicleid;
 	
 	private String typeDesignation;
 	
-	@Pattern(regexp = "^[A-HJ-NPR-Z\\d]{8}[\\dX][A-HJ-NPR-Z\\d]{2}\\d{6}$", message = " Invalid VIN!")
 	private String VIN;
 	private String comment;
 	
@@ -52,7 +50,7 @@ public class VehicleController {
 	private String selectedModel;
 	
 	private Applicationuser applicationuser;
-		
+			
 	
 	@PostConstruct
 	public void init(){
@@ -104,7 +102,14 @@ public class VehicleController {
 		v.setBrand(selectedBrand);
 		v.setModel(selectedModel);
 		v.setTypedesignation(typeDesignation);
-		v.setVin(VIN);
+		
+		if(VIN.matches("^[A-HJ-NPR-Z\\d]{8}[\\dX][A-HJ-NPR-Z\\d]{2}\\d{6}$")) {
+			v.setVin(VIN);
+		} else {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			FacesMessage facesMessage = new FacesMessage(" Invalid VIN!");
+			facesContext.addMessage("form:VIN", facesMessage);
+		}
 		v.setComment(comment);
 		
 		StringBuilder sb = new StringBuilder();
@@ -138,7 +143,14 @@ public class VehicleController {
 		v.setBrand(selectedBrand);
 		v.setModel(selectedModel);
 		v.setTypedesignation(typeDesignation);
-		v.setVin(VIN);
+		
+		if(VIN.matches("^[A-HJ-NPR-Z\\d]{8}[\\dX][A-HJ-NPR-Z\\d]{2}\\d{6}$")) {
+			v.setVin(VIN);
+		} else {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			FacesMessage facesMessage = new FacesMessage(" Invalid VIN!");
+			facesContext.addMessage("form:VIN", facesMessage);
+		}
 		v.setComment(comment);
 
 		StringBuilder sb = new StringBuilder();
@@ -168,6 +180,7 @@ public class VehicleController {
 	}
 	
 	public void getVehicle(int vehicleid){
+		
 		Vehicle v = vehiclebl.getVehicle(vehicleid);
 		this.vehicleid = v.getVehicleid();
 		selectedBrand = null;
@@ -180,10 +193,22 @@ public class VehicleController {
 		userid = String.valueOf(v.getApplicationuser().getUserid());
 		
 		applicationuser = userbl.getUser(Integer.parseInt(userid));
+		
+		
 	}
 	
 	public List<Vehicle> getVehicles(){
 		return vehiclebl.getVehicleList();
+	}
+	
+	public void doRedirect(String url) {
+		try {
+			FacesContext fc = FacesContext.getCurrentInstance();
+			fc.getExternalContext().redirect(url);
+			
+		} catch (Exception e) {
+			
+		}
 	}
 	
 

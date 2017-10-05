@@ -33,7 +33,7 @@ public class Applicationuser implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Vehicle
-	@OneToMany(mappedBy="applicationuser", fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	private List<Vehicle> vehicles;
 
 	public Applicationuser() {
@@ -103,26 +103,5 @@ public class Applicationuser implements Serializable {
 		this.vehicles = vehicles;
 	}
 
-	public Vehicle addVehicle(Vehicle vehicle) {
-		getVehicles().add(vehicle);
-		vehicle.setApplicationuser(this);
-
-		return vehicle;
-	}
-
-	public Vehicle removeVehicle(Vehicle vehicle) {
-		getVehicles().remove(vehicle);
-		vehicle.setApplicationuser(null);
-
-		return vehicle;
-	}
-
-	@Override
-	public String toString() {
-		return "Applicationuser [userid=" + userid + ", firstname=" + firstname
-				+ ", lastlogin=" + lastlogin + ", lastname=" + lastname
-				+ ", password=" + password + ", role=" + role + ", username="
-				+ username + ", vehicles=" + vehicles + "]";
-	}
 
 }
